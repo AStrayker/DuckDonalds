@@ -1,17 +1,18 @@
 from flask import Flask, render_template, request, redirect, url_for
+from flask_frozen import Freezer
 
 app = Flask(__name__)
 
-# Расширенное меню "Дак Дональдс"
+# Меню "Дак Дональдс"
 menu = {
     "Бургеры": [
-        {"name": "ДакКриспи", "price": 120, "image": "https://github.com/AStrayker/DuckDonalds/blob/main/%D0%94%D0%B0%D0%BA%D0%9A%D1%80%D0%B8%D1%81%D0%BF%D0%B8.jfif"},
-        {"name": "ДакКриспи Смоки Бекон", "price": 140, "image": "https://github.com/AStrayker/DuckDonalds/blob/main/%D0%94%D0%B0%D0%BA%D0%9A%D1%80%D0%B8%D1%81%D0%BF%D0%B8%20%D0%A1%D0%BC%D0%BE%D0%BA%D0%B8%20%D0%91%D0%B5%D0%BA%D0%BE%D0%BD.jfif"},
-        {"name": "Чизбургер", "price": 60, "image": "https://github.com/AStrayker/DuckDonalds/blob/main/%D0%A7%D0%B8%D0%B7%D0%B1%D1%83%D1%80%D0%B3%D0%B5%D1%80.jfif"},
-        {"name": "Гамбургер", "price": 50, "image": "https://github.com/AStrayker/DuckDonalds/blob/main/%D0%93%D0%B0%D0%BC%D0%B1%D1%83%D1%80%D0%B3%D0%B5%D1%80.jfif"},
-        {"name": "Биг Дак", "price": 150, "image": "https://github.com/AStrayker/DuckDonalds/БигДак.png"},
-        {"name": "ДакТейсти", "price": 160, "image": "https://github.com/AStrayker/DuckDonalds/blob/main/%D0%94%D0%B0%D0%BA%D0%A2%D0%B5%D0%B9%D1%81%D1%82%D0%B8.jfif"},
-        {"name": "ДакЧикен", "price": 110, "image": "https://virus-corp.do.am/dakchiken.png"},
+        {"name": "ДакКриспи", "price": 120, "image": "dakcrispy.jpg"},
+        {"name": "ДакКриспи Смоки Бекон", "price": 140, "image": "dakcrispy_bacon.jpg"},
+        {"name": "Чизбургер", "price": 60, "image": "cheeseburger.jpg"},
+        {"name": "Гамбургер", "price": 50, "image": "hamburger.jpg"},
+        {"name": "Биг Дак", "price": 150, "image": "bigdak.jpg"},
+        {"name": "ДакТейсти", "price": 160, "image": "daktasty.jpg"},
+        {"name": "ДакЧикен", "price": 110, "image": "dakchicken.jpg"},
     ],
     "Напитки": [
         {"name": "Кола (маленькая)", "price": 35, "image": "cola_small.jpg"},
@@ -53,7 +54,7 @@ menu = {
     ]
 }
 
-# Корзина: {item_name: {"price": price, "quantity": quantity}}
+# Корзина
 cart = {}
 
 @app.route('/')
@@ -84,5 +85,17 @@ def confirm_order():
     cart.clear()
     return render_template('confirm.html', total=total)
 
+# Настройка Frozen-Flask
+freezer = Freezer(app)
+
+# Добавляем маршруты для заморозки
+@freezer.register_generator
+def url_generator():
+    yield 'index', {}
+    yield 'confirm_order', {}
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Для заморозки страниц
+    freezer.freeze()
+    # Для локального запуска (опционально)
+    # app.run(debug=True)
