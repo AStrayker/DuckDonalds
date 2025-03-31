@@ -62,6 +62,7 @@ header h1 {
 .category h2 {
     font-size: 24px;
     margin-bottom: 10px;
+    width: 100%; /* Убедимся, что заголовок занимает всю ширину */
 }
 
 .item {
@@ -174,11 +175,20 @@ header h1 {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
+        align-items: flex-start; /* Убедимся, что элементы выравниваются сверху */
+    }
+
+    .category h2 {
+        font-size: 20px; /* Уменьшим размер заголовка для мобильной версии */
+        margin-bottom: 5px;
+        width: 100%; /* Заголовок занимает всю ширину */
+        text-align: left; /* Выравнивание заголовка по левому краю */
     }
 
     .item {
         width: calc(50% - 20px); /* Два столбца с учётом отступов */
         margin: 10px;
+        box-sizing: border-box; /* Учитываем padding и border в ширине */
     }
 
     .item img {
